@@ -232,20 +232,14 @@ JWT authentication is planned but not yet enforced on any endpoint.
 
 ## Contributing
 
-This repository is maintained for learning and portfolio purposes. Issues and suggestions are welcome, but active feature development is not guaranteed.
+This is a personal portfolio repository. It is not open for contributions, forks, or external use.
 
 ---
 
 ## License
 
-This project is licensed under the **MIT License**.
+**All Rights Reserved** — Copyright (c) 2024–2026 Mukhtiar Shah
 
-Copyright (c) 2024–2026 Mukhtiar Shah
+This project is shared **for recruiter and hiring review only**. You may view the code to evaluate the author's skills. You may not use, copy, download, modify, distribute, or incorporate any part of this software without explicit written permission.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-See [LICENSE](LICENSE) for the full license text.
+See [LICENSE](LICENSE) for full terms.

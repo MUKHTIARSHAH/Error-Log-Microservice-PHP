@@ -2,11 +2,10 @@
     "name": "markhor-devops/error-logs-microservice",
     "description": "Error logs microservice for Markhor DevOps",
     "type": "project",
-    "license": "MIT",
+    "license": "proprietary",
     "authors": [
         {
-            "name": "Markhor DevOps Team",
-            "email": "devops@markhor.com"
+            "name": "Mukhtiar Shah"
         }
     ],
     "require": {
