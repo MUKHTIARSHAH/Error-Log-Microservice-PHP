@@ -241,5 +241,3 @@ This is a personal portfolio repository. It is not open for contributions, forks
 **All Rights Reserved** — Copyright (c) 2024–2026 Mukhtiar Shah
 
 This project is shared **for recruiter and hiring review only**. You may view the code to evaluate the author's skills. You may not use, copy, download, modify, distribute, or incorporate any part of this software without explicit written permission.
-
-See [LICENSE](LICENSE) for full terms.
