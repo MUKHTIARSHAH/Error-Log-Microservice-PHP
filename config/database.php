@@ -6,9 +6,9 @@
 
 // Database configuration constants
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'error_logs');
-define('DB_USER', 'your_username'); // Change to your MySQL username
-define('DB_PASS', 'your_password'); // Change to your MySQL password
+define('DB_NAME', 'error_log');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
 /**
