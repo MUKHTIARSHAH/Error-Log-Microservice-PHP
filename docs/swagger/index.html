@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Logs Microservice API Documentation</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui.css" />
+    <style>
+        html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        body {
+            margin:0;
+            background: #fafafa;
+        }
+        .swagger-ui .topbar {
+            background-color: #2c3e50;
+        }
+        .swagger-ui .topbar .download-url-wrapper .select-label {
+            color: #fff;
+        }
+        .swagger-ui .info .title {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-standalone-preset.js"></script>
+    <script>
+        window.onload = function() {
+            const ui = SwaggerUIBundle({
+                url: '',
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                spec: {
+                    "openapi": "3.0.0",
+                    "info": {
+                        "title": "Error Logs Microservice API",
+                        "description": "A microservice for storing and retrieving error logs with filtering and statistics capabilities.\n\nNote about Swagger UI in browser: If 'Try it out' shows 'Failed to fetch' for https endpoints, it's usually a browser CORS preflight restriction. The API itself works (as verified in Postman/cURL). To test from browser-based Swagger UI, ensure your API sends CORS headers (Access-Control-Allow-Origin/Methods/Headers) and responds to OPTIONS. Otherwise, use the provided cURL or Postman examples.",
+                        "version": "1.0.0",
+                        "contact": {
+                            "name": "Development Team",
+                            "email": "dev@example.com"
+                        }
+                    },
+                    "servers": [
+                        {
+                            "url": "https://xivra.pk/error_log/api/v1/error_logs",
+                            "description": "Production Server"
+                        },
+                        {
+                            "url": "http://localhost/error_logs/api/v1/error_logs",
+                            "description": "Local XAMPP Apache Server"
+                        },
+                        {
+                            "url": "http://localhost:8080/api/v1/error_logs",
+                            "description": "Development Server"
+                        }
+                    ],
+                    "paths": {
+                        "/create_log.php": {
+                            "post": {
+                                "summary": "Create Error Log",
+                                "description": "Creates a new error log entry in the database",
+                                "tags": ["Error Logs"],
+                                "requestBody": {
+                                    "required": true,
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/ErrorLogRequest"
+                                            },
+                                            "example": {
+                                                "user_id": 1,
+                                                "organization_id": "xyz",
+                                                "product_id": 1,
+                                                "STATUS": "error",
+                                                "MESSAGE": "Validation failed",
+                                                "CODE": 422,
+                                                "DATA": {
+                                                    "validation_errors": {
+                                                        "email_address": "Email format is invalid",
+                                                        "password": "Password must be at least 8 characters"
+                                                    }
+                                                },
+                                                "TIMESTAMP": "2025-01-15 14:25:30"
+                                            }
+                                        }
+                                    }
+                                },
+                                "responses": {
+                                    "201": {
+                                        "description": "Error log created successfully",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/SuccessResponse"
+                                                },
+                                                "example": {
+                                                    "STATUS": "success",
+                                                    "MESSAGE": "Error log created successfully",
+                                                    "CODE": "201",
+                                                    "DATA": {
+                                                        "log_id": 123,
+                                                        "created_at": "2025-01-15 14:25:30"
+                                                    },
+                                                    "TIMESTAMP": "2025-01-15 14:25:30"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "400": {
+                                        "description": "Bad Request - Invalid input data",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "422": {
+                                        "description": "Validation Error",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "500": {
+                                        "description": "Internal Server Error",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "/get_logs.php": {
+                            "get": {
+                                "summary": "Get Error Logs",
+                                "description": "Retrieves error logs with pagination and filtering options",
+                                "tags": ["Error Logs"],
+                                "parameters": [
+                                    {
+                                        "name": "page",
+                                        "in": "query",
+                                        "description": "Page number (default: 1)",
+                                        "required": false,
+                                        "schema": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "default": 1
+                                        }
+                                    },
+                                    {
+                                        "name": "limit",
+                                        "in": "query",
+                                        "description": "Items per page (default: 10, max: 100)",
+                                        "required": false,
+                                        "schema": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "maximum": 100,
+                                            "default": 10
+                                        }
+                                    },
+                                    {
+                                        "name": "user_id",
+                                        "in": "query",
+                                        "description": "Filter by user ID",
+                                        "required": false,
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    {
+                                        "name": "organization_id",
+                                        "in": "query",
+                                        "description": "Filter by organization ID",
+                                        "required": false,
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "product_id",
+                                        "in": "query",
+                                        "description": "Filter by product ID",
+                                        "required": false,
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    {
+                                        "name": "status",
+                                        "in": "query",
+                                        "description": "Filter by status",
+                                        "required": false,
+                                        "schema": {
+                                            "type": "string",
+                                            "enum": ["error", "warning", "info", "debug"]
+                                        }
+                                    }
+                                ],
+                                "responses": {
+                                    "200": {
+                                        "description": "Error logs retrieved successfully",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/LogsResponse"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "400": {
+                                        "description": "Bad Request - Invalid parameters",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "500": {
+                                        "description": "Internal Server Error",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "/get_log.php": {
+                            "get": {
+                                "summary": "Get Error Log by ID",
+                                "description": "Retrieves a specific error log by its ID",
+                                "tags": ["Error Logs"],
+                                "parameters": [
+                                    {
+                                        "name": "id",
+                                        "in": "query",
+                                        "description": "Error log ID",
+                                        "required": true,
+                                        "schema": {
+                                            "type": "integer",
+                                            "minimum": 1
+                                        }
+                                    }
+                                ],
+                                "responses": {
+                                    "200": {
+                                        "description": "Error log retrieved successfully",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/SingleLogResponse"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "400": {
+                                        "description": "Bad Request - Missing or invalid ID",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "404": {
+                                        "description": "Error log not found",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "500": {
+                                        "description": "Internal Server Error",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "/statistics.php": {
+                            "get": {
+                                "summary": "Get Error Log Statistics",
+                                "description": "Retrieves error log statistics and analytics",
+                                "tags": ["Statistics"],
+                                "parameters": [
+                                    {
+                                        "name": "user_id",
+                                        "in": "query",
+                                        "description": "Filter by user ID",
+                                        "required": false,
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    {
+                                        "name": "organization_id",
+                                        "in": "query",
+                                        "description": "Filter by organization ID",
+                                        "required": false,
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "product_id",
+                                        "in": "query",
+                                        "description": "Filter by product ID",
+                                        "required": false,
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ],
+                                "responses": {
+                                    "200": {
+                                        "description": "Statistics retrieved successfully",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/StatisticsResponse"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "400": {
+                                        "description": "Bad Request - Invalid parameters",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "500": {
+                                        "description": "Internal Server Error",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "$ref": "#/components/schemas/ErrorResponse"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "components": {
+                        "schemas": {
+                            "ErrorLogRequest": {
+                                "type": "object",
+                                "required": ["user_id", "organization_id", "product_id", "STATUS", "MESSAGE", "CODE", "TIMESTAMP"],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "description": "User ID who generated the error"
+                                    },
+                                    "organization_id": {
+                                        "type": "string",
+                                        "description": "Organization identifier"
+                                    },
+                                    "product_id": {
+                                        "type": "integer",
+                                        "description": "Product ID where error occurred"
+                                    },
+                                    "STATUS": {
+                                        "type": "string",
+                                        "enum": ["error", "warning", "info", "debug"],
+                                        "description": "Error status level"
+                                    },
+                                    "MESSAGE": {
+                                        "type": "string",
+                                        "description": "Error message"
+                                    },
+                                    "CODE": {
+                                        "type": "integer",
+                                        "description": "Error code"
+                                    },
+                                    "DATA": {
+                                        "type": "object",
+                                        "description": "Additional error data in JSON format"
+                                    },
+                                    "TIMESTAMP": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+                                        "description": "Error timestamp (format: YYYY-MM-DD HH:MM:SS)"
+                                    }
+                                }
+                            },
+                            "SuccessResponse": {
+                                "type": "object",
+                                "properties": {
+                                    "STATUS": {
+                                        "type": "string",
+                                        "enum": ["success"]
+                                    },
+                                    "MESSAGE": {
+                                        "type": "string"
+                                    },
+                                    "CODE": {
+                                        "type": "string"
+                                    },
+                                    "DATA": {
+                                        "type": "object"
+                                    },
+                                    "TIMESTAMP": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                }
+                            },
+                            "ErrorResponse": {
+                                "type": "object",
+                                "properties": {
+                                    "STATUS": {
+                                        "type": "string",
+                                        "enum": ["error"]
+                                    },
+                                    "MESSAGE": {
+                                        "type": "string"
+                                    },
+                                    "CODE": {
+                                        "type": "string"
+                                    },
+                                    "DATA": {
+                                        "type": "object"
+                                    },
+                                    "TIMESTAMP": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                }
+                            },
+                            "ValidationErrorResponse": {
+                                "type": "object",
+                                "properties": {
+                                    "STATUS": {
+                                        "type": "string",
+                                        "enum": ["error"]
+                                    },
+                                    "MESSAGE": {
+                                        "type": "string",
+                                        "default": "Validation failed"
+                                    },
+                                    "CODE": {
+                                        "type": "string",
+                                        "default": "422"
+                                    },
+                                    "DATA": {
+                                        "type": "object",
+                                        "properties": {
+                                            "validation_errors": {
+                                                "type": "object",
+                                                "additionalProperties": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "TIMESTAMP": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                }
+                            },
+                            "LogsResponse": {
+                                "type": "object",
+                                "properties": {
+                                    "STATUS": {
+                                        "type": "string",
+                                        "enum": ["success"]
+                                    },
+                                    "MESSAGE": {
+                                        "type": "string"
+                                    },
+                                    "CODE": {
+                                        "type": "string"
+                                    },
+                                    "DATA": {
+                                        "type": "object",
+                                        "properties": {
+                                            "logs": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/ErrorLog"
+                                                }
+                                            },
+                                            "pagination": {
+                                                "$ref": "#/components/schemas/Pagination"
+                                            }
+                                        }
+                                    },
+                                    "TIMESTAMP": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                }
+                            },
+                            "SingleLogResponse": {
+                                "type": "object",
+                                "properties": {
+                                    "STATUS": {
+                                        "type": "string",
+                                        "enum": ["success"]
+                                    },
+                                    "MESSAGE": {
+                                        "type": "string"
+                                    },
+                                    "CODE": {
+                                        "type": "string"
+                                    },
+                                    "DATA": {
+                                        "$ref": "#/components/schemas/ErrorLog"
+                                    },
+                                    "TIMESTAMP": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                }
+                            },
+                            "StatisticsResponse": {
+                                "type": "object",
+                                "properties": {
+                                    "STATUS": {
+                                        "type": "string",
+                                        "enum": ["success"]
+                                    },
+                                    "MESSAGE": {
+                                        "type": "string"
+                                    },
+                                    "CODE": {
+                                        "type": "string"
+                                    },
+                                    "DATA": {
+                                        "type": "object",
+                                        "properties": {
+                                            "total_errors": {
+                                                "type": "integer",
+                                                "description": "Total number of error logs"
+                                            },
+                                            "recent_errors_24h": {
+                                                "type": "integer",
+                                                "description": "Number of errors in the last 24 hours"
+                                            },
+                                            "status_breakdown": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": ["error", "warning", "info", "debug"]
+                                                        },
+                                                        "count": {
+                                                            "type": "integer"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "TIMESTAMP": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                }
+                            },
+                            "ErrorLog": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "description": "Error log ID"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "description": "User ID who generated the error"
+                                    },
+                                    "organization_id": {
+                                        "type": "string",
+                                        "description": "Organization identifier"
+                                    },
+                                    "product_id": {
+                                        "type": "integer",
+                                        "description": "Product ID where error occurred"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": ["error", "warning", "info", "debug"],
+                                        "description": "Error status level"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "description": "Error message"
+                                    },
+                                    "code": {
+                                        "type": "integer",
+                                        "description": "Error code"
+                                    },
+                                    "data": {
+                                        "type": "object",
+                                        "description": "Additional error data"
+                                    },
+                                    "timestamp": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Error timestamp"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Record creation timestamp"
+                                    }
+                                }
+                            },
+                            "Pagination": {
+                                "type": "object",
+                                "properties": {
+                                    "current_page": {
+                                        "type": "integer",
+                                        "description": "Current page number"
+                                    },
+                                    "items_per_page": {
+                                        "type": "integer",
+                                        "description": "Number of items per page"
+                                    },
+                                    "total_items": {
+                                        "type": "integer",
+                                        "description": "Total number of items"
+                                    },
+                                    "total_pages": {
+                                        "type": "integer",
+                                        "description": "Total number of pages"
+                                    },
+                                    "has_next_page": {
+                                        "type": "boolean",
+                                        "description": "Whether there is a next page"
+                                    },
+                                    "has_previous_page": {
+                                        "type": "boolean",
+                                        "description": "Whether there is a previous page"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "tags": [
+                        {
+                            "name": "Error Logs",
+                            "description": "Operations for creating and retrieving error logs"
+                        },
+                        {
+                            "name": "Statistics",
+                            "description": "Operations for retrieving error log statistics and analytics"
+                        }
+                    ]
+                }
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+    "name": "markhor-devops/error-logs-microservice",
+    "description": "Error logs microservice for Markhor DevOps",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Markhor DevOps Team",
+            "email": "devops@markhor.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "paragonie/easydb": "^2.12",
+        "php-amqplib/php-amqplib": "^3.0",
+        "firebase/php-jwt": "^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ErrorLogs\\": "src/"
+        },
+        "files": [
+            "config/database.php",
+            "config/jwt_config.php",
+            "config/memcache_config.php",
+            "config/rabbitmq_config.php",
+            "includes/functions.php",
+            "includes/auth_helpers.php",
+            "includes/response_helpers.php",
+            "includes/validation_helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ErrorLogs\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "post-install-cmd": [
+            "mkdir -p logs/error_logs",
+            "mkdir -p logs/access_logs",
+            "chmod 755 logs/error_logs",
+            "chmod 755 logs/access_logs"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+} 

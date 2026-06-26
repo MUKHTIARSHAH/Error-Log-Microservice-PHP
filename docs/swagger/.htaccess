@@ -1,0 +1,39 @@
+# Swagger UI .htaccess file
+# This file helps with routing and MIME types for the Swagger UI
+
+# Enable rewrite engine
+RewriteEngine On
+
+# Set proper MIME types
+AddType text/yaml .yaml
+AddType text/yaml .yml
+AddType application/json .json
+
+# Handle CORS for API testing
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+
+# Redirect root to launcher
+RewriteRule ^$ launch.php [L]
+
+# Handle preflight OPTIONS requests
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# Security headers
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+
+# Cache control for static assets
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# No cache for API spec files
+<FilesMatch "\.(yaml|yml|json)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</FilesMatch>
