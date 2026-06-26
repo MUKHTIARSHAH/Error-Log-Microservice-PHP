@@ -1,8 +1,29 @@
 # Error Log Microservice
 
+![PHP](https://img.shields.io/badge/PHP-7.4%2B-777BB4?logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-5.7%2B-4479A1?logo=mysql&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-UI-85EA2D?logo=swagger&logoColor=black)
+![Composer](https://img.shields.io/badge/Composer-managed-885630?logo=composer&logoColor=white)
+
 A lightweight PHP microservice for collecting, storing, and querying application error logs through a REST API. Designed as a centralized logging service for small PHP applications.
 
-**Repository:** [github.com/MUKHTIARSHAH/Error-Log-Microservice-PHP](https://github.com/MUKHTIARSHAH/Error-Log-Microservice-PHP)
+This project demonstrates how to design a reusable logging service that can be integrated into multiple PHP applications through a simple REST API.
+
+---
+
+## Table of Contents
+
+- [Feature Status](#feature-status)
+- [Technology Stack](#technology-stack)
+- [Architecture](#architecture)
+- [Design Principles](#design-principles)
+- [Installation](#installation)
+- [Database](#database)
+- [API Endpoints](#api-endpoints)
+- [Project Structure](#project-structure)
+- [Testing](#testing)
+- [Security](#security)
+- [License](#license)
 
 ---
 
@@ -105,7 +126,7 @@ Client Application
 
 5. **Browse the API documentation**
    ```
-   http://localhost/error_logs/docs/swagger/
+   http://localhost/Error-Log-Microservice-PHP/docs/swagger/
    ```
 
 ---
@@ -183,7 +204,7 @@ Full request/response details are available in the [Swagger UI](docs/swagger/).
 ## Project Structure
 
 ```
-error_logs/
+Error-Log-Microservice-PHP/
 ├── api/v1/error_logs/       # REST endpoints
 │   ├── create_log.php
 │   ├── get_logs.php
@@ -230,14 +251,8 @@ JWT authentication is planned but not yet enforced on any endpoint.
 
 ---
 
-## Contributing
-
-This is a personal portfolio repository. It is not open for contributions, forks, or external use.
-
----
-
 ## License
 
 **All Rights Reserved** — Copyright (c) 2024–2026 Mukhtiar Shah
 
-This project is shared **for recruiter and hiring review only**. You may view the code to evaluate the author's skills. You may not use, copy, download, modify, distribute, or incorporate any part of this software without explicit written permission.
+This repository is published for portfolio and evaluation purposes only. No license is granted to use, redistribute, modify, or incorporate this software into other projects without the author's written permission.
